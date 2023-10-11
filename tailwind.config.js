@@ -9,6 +9,12 @@ export default {
       spacing: {
         '400': '400px',
         '600': '600px',
+      },
+      fontFamily: {
+        'game': "'Special Elite', cursive",
+      },
+      skew: {
+        '20': '20deg',
       }
     },
   },
