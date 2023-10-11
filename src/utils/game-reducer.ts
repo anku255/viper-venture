@@ -1,3 +1,5 @@
+import { playHighSound, playLowSound } from "./";
+
 type Coordinate = { x: number; y: number };
 type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
 export type GameDifficulty = "EASY" | "MEDIUM" | "HARD";
@@ -22,6 +24,7 @@ export const initialGameState = {
   score: 0,
   highestScore: -1,
   difficulty: "MEDIUM" as GameDifficulty,
+  isSoundEnabled: true,
 };
 
 export type Action =
@@ -30,7 +33,8 @@ export type Action =
   | { type: "RESTART_GAME" }
   | { type: "TOGGLE_PAUSE" }
   | { type: "KEY_PRESS"; payload: string }
-  | { type: "UPDATE_DIFFICULTY"; payload: GameDifficulty };
+  | { type: "UPDATE_DIFFICULTY"; payload: GameDifficulty }
+  | { type: "TOGGLE_SOUND" };
 
 function getRandomFoodCoordinate(): Coordinate {
   const x = Math.floor(Math.random() * 60) * 10;
@@ -97,6 +101,8 @@ export function gameReducer(
       const hasEatenFood = head.x === state.food.x && head.y === state.food.y;
 
       if (hasEatenFood) {
+        state.isSoundEnabled && playHighSound();
+
         return {
           ...state,
           board: [getHeadAfterSnakeMoves(head, state.direction), ...board],
@@ -111,7 +117,12 @@ export function gameReducer(
       return { ...state, highestScore: action.payload };
     }
     case "RESTART_GAME": {
-      return initialGameState;
+      return {
+        ...initialGameState,
+        highestScore: state.highestScore,
+        difficulty: state.difficulty,
+        isSoundEnabled: state.isSoundEnabled,
+      };
     }
     case "TOGGLE_PAUSE": {
       return { ...state, isPaused: !state.isPaused };
@@ -152,7 +163,12 @@ export function gameReducer(
     }
 
     case "UPDATE_DIFFICULTY": {
+      state.isSoundEnabled && playLowSound();
       return { ...state, difficulty: action.payload };
+    }
+
+    case "TOGGLE_SOUND": {
+      return { ...state, isSoundEnabled: !state.isSoundEnabled };
     }
     default:
       throw new Error(`Unhandled action type: ${action.type}`);

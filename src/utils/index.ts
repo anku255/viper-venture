@@ -34,3 +34,18 @@ export async function saveScoreInDB({
     console.log("Error updating highest score", error);
   }
 }
+
+export function playDieSound() {
+  const audio = new Audio("/die.mp3");
+  audio.play();
+}
+
+export function playHighSound() {
+  const audio = new Audio("/high.mp3");
+  audio.play();
+}
+
+export function playLowSound() {
+  const audio = new Audio("/low.mp3");
+  audio.play();
+}
