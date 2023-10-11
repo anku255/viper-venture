@@ -2,7 +2,7 @@
 
 > A snake game built using React.js, Typescript and Supabase.
 
-### ✨ [Demo](vercel.app)
+### ✨ [Demo](https://viper-venture.vercel.app/)
 
 ## Install
 
