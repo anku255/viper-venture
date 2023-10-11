@@ -171,6 +171,7 @@ export function gameReducer(
       return { ...state, isSoundEnabled: !state.isSoundEnabled };
     }
     default:
+      // @ts-expect-error TS complains because all action.type are already handled above but we still need to keep it just in case we added a new type and forgot to handle it
       throw new Error(`Unhandled action type: ${action.type}`);
   }
 }
